@@ -1,0 +1,55 @@
+[
+    {
+        "word": "serendipity",
+        "phonetic": "/ˌsɛ.ɹən.ˈdɪ.pɪ.ti/",
+        "phonetics": [
+            {
+                "text": "/ˌsɛ.ɹən.ˈdɪ.pɪ.ti/",
+                "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/serendipity-us.mp3"
+            },
+            {
+                "text": "",
+                "audio": ""
+            }
+        ],
+        "meanings": [
+            {
+                "partOfSpeech": "noun",
+                "definitions": [
+                    {
+                        "definition": "A combination of events which have come together by chance to make a surprisingly good or wonderful outcome.",
+                        "synonyms": ["chance", "luck", "fortune"],
+                        "antonyms": [],
+                        "example": "The discovery of penicillin was a classic example of serendipity."
+                    },
+                    {
+                        "definition": "An unsought, unintended, and/or unexpected, but fortunate, discovery and/or learning experience that happens by accident.",
+                        "synonyms": ["fluke", "providence"],
+                        "antonyms": [],
+                        "example": ""
+                    }
+                ],
+                "synonyms": ["chance", "luck"],
+                "antonyms": []
+            },
+            {
+                "partOfSpeech": "noun",
+                "definitions": [
+                    {
+                        "definition": "The faculty of making fortunate discoveries by accident.",
+                        "synonyms": [],
+                        "antonyms": [],
+                        "example": "She had a real serendipity for finding the best restaurants."
+                    }
+                ],
+                "synonyms": [],
+                "antonyms": []
+            }
+        ],
+        "license": {
+            "name": "CC BY-SA 3.0",
+            "url": "https://creativecommons.org/licenses/by-sa/3.0"
+        },
+        "sourceUrls": ["https://en.wiktionary.org/wiki/serendipity"]
+    }
+]

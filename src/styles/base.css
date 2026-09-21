@@ -1,0 +1,186 @@
+/**
+ * Base styles — FROZEN (scaffold-FE) per ARCHITECTURE.md §3/§5.11.
+ * Tailwind v4 entrypoint + resets + shared classes (.vellum-panel, buttons,
+ * scrollbars, focus ring, reduced-motion guard).
+ */
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* ------------------------------------------------------------------ resets */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;            /* app shell: panels scroll, document does not */
+}
+
+body {
+  background: var(--v-bg);
+  color: var(--v-fg);
+  font-family: system-ui, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  user-select: none;           /* chrome is not selectable… */
+}
+
+/* …but reader content and text inputs are. */
+input, textarea, [contenteditable="true"], .vellum-selectable {
+  user-select: auto;
+}
+
+::selection { background: color-mix(in srgb, var(--v-accent) 28%, transparent); }
+
+/* --------------------------------------------------------------- scrollbars */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--v-fg) 22%, transparent) transparent;
+}
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--v-fg) 18%, transparent);
+  border-radius: 4px;
+}
+*::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--v-fg) 30%, transparent); }
+
+/* ---------------------------------------------------------------- buttons */
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.vellum-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--v-border);
+  background: var(--v-bg-alt);
+  color: var(--v-fg);
+  font-size: 13px;
+  transition: background var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease),
+              opacity var(--dur-fast) var(--ease);
+}
+.vellum-btn:hover { background: var(--v-bg-raise); border-color: color-mix(in srgb, var(--v-fg) 25%, var(--v-border)); }
+.vellum-btn:active { opacity: 0.8; }
+.vellum-btn:disabled { opacity: 0.45; cursor: default; }
+
+.vellum-btn-accent {
+  background: var(--v-accent);
+  border-color: var(--v-accent);
+  color: var(--v-accent-fg);
+}
+.vellum-btn-accent:hover {
+  background: color-mix(in srgb, var(--v-accent) 88%, var(--v-fg));
+  border-color: transparent;
+}
+
+.vellum-btn-ghost { border-color: transparent; background: transparent; }
+.vellum-btn-ghost:hover { background: color-mix(in srgb, var(--v-fg) 8%, transparent); }
+
+.vellum-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  color: var(--v-fg-muted);
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.vellum-icon-btn:hover { background: color-mix(in srgb, var(--v-fg) 8%, transparent); color: var(--v-fg); }
+.vellum-icon-btn[aria-pressed="true"], .vellum-icon-btn[data-active="true"] {
+  color: var(--v-accent);
+  background: color-mix(in srgb, var(--v-accent) 12%, transparent);
+}
+
+/* ------------------------------------------------------------------ focus */
+
+:focus-visible {
+  outline: 2px solid var(--v-accent);
+  outline-offset: 1px;
+  border-radius: 2px;
+}
+
+/* ----------------------------------------------------------------- inputs */
+
+input, textarea, select {
+  font: inherit;
+  color: var(--v-fg);
+  background: var(--v-bg-alt);
+  border: 1px solid var(--v-border);
+  border-radius: var(--radius-sm);
+  padding: 5px 8px;
+}
+input:focus, textarea:focus { border-color: var(--v-accent); outline: none; }
+input::placeholder, textarea::placeholder { color: var(--v-fg-muted); }
+
+/* ----------------------------------------------------------------- panels */
+
+/* Left/right drawer + overlay panels get a subtle entrance (§5.11: 180 ms). */
+@keyframes vellum-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes vellum-slide-in-left {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes vellum-slide-in-right {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes vellum-scale-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.vellum-panel {
+  background: var(--v-bg-alt);
+  border: 1px solid var(--v-border);
+  border-radius: var(--radius);
+  box-shadow: var(--v-shadow);
+}
+
+.vellum-fade-in { animation: vellum-fade-in var(--dur-med) var(--ease); }
+.vellum-slide-in-left { animation: vellum-slide-in-left var(--dur-med) var(--ease); }
+.vellum-slide-in-right { animation: vellum-slide-in-right var(--dur-med) var(--ease); }
+.vellum-scale-in { animation: vellum-scale-in var(--dur-fast) var(--ease); }
+
+/* ------------------------------------------------------------- typography */
+
+.vellum-num { font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------- reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* «animations off» setting (§5.9) mirrors reduced-motion via data attribute. */
+:root[data-animations="off"] *,
+:root[data-animations="off"] *::before,
+:root[data-animations="off"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}

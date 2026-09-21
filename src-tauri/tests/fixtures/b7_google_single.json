@@ -1,0 +1,35 @@
+[
+  [
+    ["привет", "hello", null, null, 10],
+    ["здравствуйте", "hello", null, null, 1]
+  ],
+  [
+    [
+      "exclamation",
+      ["привет", "здравствуйте", "алло"],
+      [
+        ["привет", ["hello", "hi"], null, null, 10],
+        ["здравствуйте", ["hello"], null, null, 1]
+      ]
+    ],
+    [
+      "noun",
+      ["приветствие"],
+      [["приветствие", ["greeting", "hello"], null, null, 3]]
+    ]
+  ],
+  "en",
+  null,
+  null,
+  null,
+  null,
+  null,
+  [
+    ["en"],
+    null,
+    [
+      ["привет", "hello", null, null, 10],
+      ["здравствуйте", "hello", null, null, 1]
+    ]
+  ]
+]

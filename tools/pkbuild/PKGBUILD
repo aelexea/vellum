@@ -1,0 +1,29 @@
+# Maintainer: sanechek
+pkgname=vellum-reader
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Fast, minimal EPUB reader with translation and vocabulary learning"
+arch=('x86_64')
+url="https://github.com/aelexea/vellum"
+license=('MIT')
+depends=('webkit2gtk-4.1' 'gtk3' 'librsvg' 'openssl' 'fontconfig' 'hicolor-icon-theme')
+makedepends=('rust' 'cargo' 'nodejs>=20' 'npm' 'imagemagick')
+source=("vellum-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+  cd "$srcdir/vellum-$pkgver"
+  npm ci
+  npm run build
+  cd src-tauri
+  cargo build --release --locked
+}
+
+package() {
+  cd "$srcdir/vellum-$pkgver"
+  install -Dm755 "src-tauri/target/release/vellum" "$pkgdir/usr/bin/vellum"
+  install -Dm644 "tools/pkbuild/vellum.desktop" "$pkgdir/usr/share/applications/vellum.desktop"
+  install -Dm644 "src-tauri/icons/128x128.png" "$pkgdir/usr/share/icons/hicolor/128x128/apps/vellum.png"
+  install -Dm644 "src-tauri/icons/icon.png" "$pkgdir/usr/share/icons/hicolor/512x512/apps/vellum.png"
+  install -Dm644 "README.md" "$pkgdir/usr/share/doc/vellum/README.md"
+}

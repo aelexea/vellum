@@ -1,0 +1,35 @@
+/**
+ * Design tokens — FROZEN (scaffold-FE) per ARCHITECTURE.md §5.11.
+ * Theme colours (--v-*) are NOT here: uiStore.applyTheme() computes them at runtime.
+ */
+:root {
+  /* motion */
+  --dur-fast: 120ms;
+  --dur-med: 180ms;
+  --dur-slow: 240ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* shape */
+  --radius: 10px;
+  --radius-sm: 6px;
+
+  /* chrome sizing */
+  --chrome-top-h: 44px;
+  --chrome-bottom-h: 48px;
+  --drawer-w: 320px;
+
+  /* fallbacks before applyTheme() runs (light theme) */
+  --v-bg: #f6f5f3;
+  --v-bg-alt: #ffffff;
+  --v-bg-raise: #ffffff;
+  --v-fg: #1f1c19;
+  --v-fg-muted: #7a736b;
+  --v-accent: #c2662d;
+  --v-accent-fg: #ffffff;
+  --v-border: #e4e0da;
+  --v-shadow: 0 1px 3px rgba(31, 28, 25, 0.08), 0 8px 24px rgba(31, 28, 25, 0.1);
+  --v-page-bg: #fcfbf9;
+  --v-page-fg: #26221d;
+  --v-page-link: #9a5b2d;
+  --v-page-selection: rgba(194, 102, 45, 0.22);
+}

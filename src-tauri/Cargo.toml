@@ -1,0 +1,44 @@
+[package]
+name = "vellum"
+version = "0.1.0"
+description = "Vellum — fast, minimal EPUB reader with translation and vocabulary learning"
+authors = ["Vellum"]
+edition = "2021"
+rust-version = "1.98"
+
+[lib]
+name = "vellum_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "vellum"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+anyhow = "1.0.104"
+dashmap = "6.2.1"
+image = { version = "0.25.10", default-features = false, features = ["jpeg", "png", "webp"] }
+lol_html = "3.0.1"
+mime_guess = "2.0.5"
+parking_lot = "0.12.5"
+quick-xml = "0.42.0"
+reqwest = { version = "0.13.5", default-features = false, features = ["rustls", "json", "gzip"] }
+rusqlite = { version = "0.40.2", features = ["bundled"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+sha1 = "0.11.0"
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+tauri-plugin-opener = "2"
+tauri-plugin-single-instance = "2"
+zip = { version = "8.6.0", default-features = false, features = ["deflate"] }
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

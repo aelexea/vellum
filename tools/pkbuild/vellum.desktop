@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Vellum
+Comment=Fast, minimal EPUB reader
+Exec=vellum %U
+Icon=vellum
+Terminal=false
+Categories=Office;Viewer;
+MimeType=application/epub+zip;
+StartupNotify=true
