@@ -436,7 +436,7 @@ export default function AnnotationsPanel() {
       return (
         <div className="vel-ap-empty">
           <p className="vel-ap-empty-title">No bookmarks</p>
-          <p className="vel-ap-empty-hint">Ctrl+D</p>
+          <p className="vel-ap-empty-hint">Press Ctrl+D while reading to bookmark the current page</p>
         </div>
       );
     }

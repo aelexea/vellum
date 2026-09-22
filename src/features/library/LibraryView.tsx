@@ -470,6 +470,42 @@ export function LibraryView() {
 
             <span className="mx-1 h-5 w-px shrink-0 bg-[var(--v-border)]" aria-hidden />
 
+            {/* Global navigation — library is the only view with no chrome bars. */}
+            <div className="flex items-center gap-0.5" role="group" aria-label="Navigate">
+              <button
+                type="button"
+                className="vellum-icon-btn"
+                aria-label="Vocabulary"
+                title="Vocabulary"
+                data-testid="nav-vocab"
+                onClick={() => setView('vocab')}
+              >
+                <Icon name="book" size={17} />
+              </button>
+              <button
+                type="button"
+                className="vellum-icon-btn"
+                aria-label="Statistics"
+                title="Statistics"
+                data-testid="nav-stats"
+                onClick={() => setView('stats')}
+              >
+                <Icon name="columns" size={17} />
+              </button>
+              <button
+                type="button"
+                className="vellum-icon-btn"
+                aria-label="Settings"
+                title="Settings"
+                data-testid="nav-settings"
+                onClick={() => setView('settings')}
+              >
+                <Icon name="settings" size={17} />
+              </button>
+            </div>
+
+            <span className="mx-1 h-5 w-px shrink-0 bg-[var(--v-border)]" aria-hidden />
+
             <button
               type="button"
               className="vellum-btn vellum-btn-accent shrink-0"

@@ -145,6 +145,10 @@ export default function SettingsView() {
       const dirs = settings.library.watchedDirs;
       if (dirs.includes(dir)) return;
       patch({ library: { watchedDirs: [...dirs, dir] } });
+      // Scan the new folder immediately so the user sees feedback; without this the
+      // folder stays inert until an explicit Rescan (libraryStore.scanDir already
+      // reports imported/skipped counts via a toast and reloads the grid).
+      await useLibraryStore.getState().scanDir(dir);
     } catch (e) {
       toast(errMsg(e), 'error');
     }

@@ -377,7 +377,7 @@ describe('AnnotationsPanel', () => {
 
     switchTab(/Bookmarks/);
     expect(screen.getByText('No bookmarks')).toBeInTheDocument();
-    expect(screen.getByText('Ctrl+D')).toBeInTheDocument();
+    expect(screen.getByText(/Press Ctrl\+D while reading/)).toBeInTheDocument();
   });
 
   it('counts drop to zero and the empty state appears after the last row is deleted', async () => {

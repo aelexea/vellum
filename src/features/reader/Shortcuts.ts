@@ -106,6 +106,9 @@ export interface KeyLike {
 
 /** Lowercase + fold layout/synonym variants to one canonical token. */
 export function normalizeKey(raw: string): string {
+  // A bare Space keydown reports e.key === ' '; trim() would erase it before the
+  // fold below, so special-case it first (otherwise spaceNext never matches).
+  if (raw === ' ') return 'space';
   let k = raw.trim().toLowerCase();
   if (k.startsWith('arrow')) k = k.slice(5);        // ArrowRight → right
   if (k === ' ') k = 'space';
@@ -396,9 +399,15 @@ export async function dispatchAction(action: string): Promise<boolean> {
     }
 
     // ----------------------------------------------------------------- theme
-    case 'cycleTheme':
+    case 'cycleTheme': {
       ui.cycleTheme();
+      // The chrome button cycles four themes blind (icon only swaps sun/moon); name the
+      // new theme so the user gets feedback on what they landed on. Read the store fresh
+      // — the snapshot above predates the cycle.
+      const name = settings.useSettingsStore.getState().theme().name;
+      uiState.toast(`Theme: ${name}`, 'info');
       return true;
+    }
 
     // ------------------------------------------------------------------ mode
     case 'toggleMode': {

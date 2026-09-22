@@ -10,6 +10,8 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run",
+    "preview:build": "vite build --config vite.preview.config.ts",
+    "preview:shots": "node tools/preview/shoot.mjs --build",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build"

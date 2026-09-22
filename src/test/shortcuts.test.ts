@@ -118,6 +118,13 @@ describe('comboFromEvent / findActionForEvent', () => {
   it('comboFromEvent folds layout variants (+ → =)', () => {
     expect(comboFromEvent(ev('+', { ctrlKey: true })).key).toBe('=');
   });
+
+  it('a real Space keydown (e.key === " ") matches the Space binding', () => {
+    // Regression: normalizeKey trimmed ' ' to '' before folding it to 'space', so a
+    // genuine Space press never matched spaceNext ('Space').
+    expect(findActionForEvent(DEFAULT_SHORTCUTS, ev(' '))).toBe('spaceNext');
+    expect(comboFromEvent(ev(' ')).key).toBe('space');
+  });
 });
 
 describe('findConflict', () => {

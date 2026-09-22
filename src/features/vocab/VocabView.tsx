@@ -176,6 +176,15 @@ export default function VocabView() {
       {/* ------------------------------------------------------------ header */}
       <header className="flex flex-col gap-3 border-b border-[var(--v-border)] px-5 py-3.5">
         <div className="flex items-center gap-3">
+          <button
+            type="button"
+            className="vellum-icon-btn -ml-1.5"
+            aria-label="Back to library"
+            title="Back to library"
+            onClick={() => useUiStore.getState().setView('library')}
+          >
+            <Icon name="arrowLeft" size={18} />
+          </button>
           <h1 className="text-[17px] font-semibold tracking-[-0.01em]">Study vocabulary</h1>
           <div className="flex-1" />
           <button

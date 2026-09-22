@@ -142,13 +142,17 @@ export const useReaderStore = create<ReaderState>()((set, get) => {
       try {
         const ob = await api.openBook(uid);
         const pos = ob.position;
+        // A saved position wins (per-book memory); otherwise honour the global
+        // Settings → Reading preference instead of always defaulting to paginated.
+        const { useSettingsStore } = await import('@/stores/settingsStore');
+        const preferredMode = useSettingsStore.getState().settings.reading.mode;
         set({
           book: ob,
           loading: false,
           chapterIdx: pos?.chapterIdx ?? 0,
           pageIndex: pos?.pageIndex ?? 0,
           pageCount: pos?.pageCount ?? 0,
-          mode: pos?.mode ?? 'paginated',
+          mode: pos?.mode ?? preferredMode,
           pctWithinChapter: pos?.pctWithinChapter ?? 0,
           selection: null,
           indexStatus: ob.indexStatus,

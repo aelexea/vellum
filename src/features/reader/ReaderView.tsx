@@ -63,6 +63,8 @@ export default function ReaderView() {
   const autoHide = useSettingsStore((s) => s.settings.ui.autoHideChrome);
   const clickZones = useSettingsStore((s) => s.settings.reading.clickZones);
   const wheelTurnsPage = useSettingsStore((s) => s.settings.reading.wheelTurnsPage);
+  const popupOnSelect = useSettingsStore((s) => s.settings.translate.popupOnSelect);
+  const selection = useReaderStore((s) => s.selection);
   // readerStore.mode is authoritative: it is restored from the saved position and is the
   // mode ChapterFrame actually laid out, which may differ from settings.reading.mode.
   const mode = useReaderStore((s) => s.mode);
@@ -77,6 +79,20 @@ export default function ReaderView() {
   useEffect(() => {
     rootRef.current?.focus();
   }, []);
+
+  // --------------------------------------------- translate popup on selection
+  // Settings → Translation "Show translation immediately on selection": open the
+  // translate overlay as soon as a real selection appears, so the user doesn't have
+  // to reach for the toolbar or Ctrl+Shift+T. Only fires on a fresh selection edge.
+  const popupOpenedFor = useRef<string | null>(null);
+  useEffect(() => {
+    const text = selection?.text.trim() || null;
+    if (!text) { popupOpenedFor.current = null; return; }
+    if (!popupOnSelect) return;
+    if (popupOpenedFor.current === text) return;
+    popupOpenedFor.current = text;
+    useUiStore.getState().setOverlay('translate');
+  }, [selection, popupOnSelect]);
 
   // --------------------------------------------------- Ctrl+H chrome force-hide
   // The flag itself lives in Shortcuts.ts so ChromeBars' wake-up timer honours it too.

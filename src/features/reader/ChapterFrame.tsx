@@ -253,9 +253,42 @@ interface Slot {
   chapterIdx: number | null;
   controller: ChapterController | null;
   pages: number;
+  /** Detaches the iframe→parent keydown forwarder (see wireKeyForwarding). */
+  unforwardKeys?: () => void;
 }
 
 const emptySlot = (): Slot => ({ chapterIdx: null, controller: null, pages: 0 });
+
+/**
+ * Forward keydown events from a chapter iframe up to the app window.
+ *
+ * The global shortcut handler (App.tsx) listens on the parent `window`, but once the
+ * reader clicks/selects text inside a chapter, focus moves into the iframe's own
+ * document and its key events no longer bubble to the parent — silently killing every
+ * shortcut, including the selection-scoped ones (translate/dictionary/add-to-vocab)
+ * that matter most right after selecting text. Re-dispatch an equivalent event on the
+ * parent window so App's capture-phase listener sees it.
+ *
+ * The iframe default is suppressed ONLY when the app actually handled the key
+ * (`dispatchEvent` returns false once a listener calls preventDefault). That keeps
+ * browser-native actions the app does not own — notably Ctrl+C to copy book text —
+ * working inside the chapter.
+ */
+function wireKeyForwarding(iframe: HTMLIFrameElement): () => void {
+  const win = iframe.contentWindow;
+  if (!win) return () => {};
+  const onKey = (e: KeyboardEvent) => {
+    const synth = new KeyboardEvent('keydown', {
+      key: e.key, code: e.code,
+      ctrlKey: e.ctrlKey, shiftKey: e.shiftKey, altKey: e.altKey, metaKey: e.metaKey,
+      bubbles: true, cancelable: true,
+    });
+    const unhandled = window.dispatchEvent(synth);
+    if (!unhandled) e.preventDefault();
+  };
+  win.addEventListener('keydown', onKey, true);
+  return () => { try { win.removeEventListener('keydown', onKey, true); } catch { /* frame gone */ } };
+}
 
 /** Restore target handed to a freshly laid-out chapter. */
 interface Position {
@@ -314,6 +347,7 @@ export default function ChapterFrame() {
   // ------------------------------------------------------------- slot teardown
   const disposeSlot = useCallback((i: number): void => {
     try { slots.current[i].controller?.dispose(); } catch { /* ignore */ }
+    try { slots.current[i].unforwardKeys?.(); } catch { /* ignore */ }
     slots.current[i] = emptySlot();
   }, []);
 
@@ -322,6 +356,7 @@ export default function ChapterFrame() {
     scrollRo.current = null;
     for (let i = 0; i < POOL_SIZE; i++) {
       try { slots.current[i].controller?.dispose(); } catch { /* ignore */ }
+      try { slots.current[i].unforwardKeys?.(); } catch { /* ignore */ }
       slots.current[i] = emptySlot();
     }
   }, []);
@@ -584,6 +619,7 @@ export default function ChapterFrame() {
 
     const slot: Slot = { chapterIdx: idx, controller, pages: 1 };
     slots.current[i] = slot;
+    slot.unforwardKeys = wireKeyForwarding(iframe);
 
     if (controller) {
       try {
